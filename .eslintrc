@@ -36,6 +36,7 @@
         "jsx": "never"
       }
     ],
+    "import/no-anonymous-default-export": "off",
     "quotes": "off",
     "jsx-a11y/anchor-is-valid": [
       "error",
