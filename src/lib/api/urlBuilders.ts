@@ -9,6 +9,14 @@ export function createUrl(url: string, params?: Record<string, unknown>) {
   return queryString ? `${fullUrl}?${queryString}` : fullUrl;
 }
 
-// export function createSlideshowsUrl() {
-//   return createUrl(`/api/content/slideshows`);
-// }
+export function createSignInUrl() {
+  return createUrl(`/auth/login`);
+}
+
+export function createRegisterUrl() {
+  return createUrl(`/auth/register`);
+}
+
+export function createAcceptInvitationUrl() {
+  return createUrl(`/auth/invite/accept`);
+}

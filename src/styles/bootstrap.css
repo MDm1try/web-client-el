@@ -1,0 +1,9 @@
+
+.btn-primary {
+    background-color: var(--them-green-color);
+    border-color: var(--them-green-color)
+}
+
+.btn-primary:hover {
+    background-color: var(--them-dark-color);
+}

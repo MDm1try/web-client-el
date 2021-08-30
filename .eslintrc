@@ -26,6 +26,7 @@
     "react/no-unused-prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "react/require-default-props": "off",
+    "consistent-return": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -60,6 +61,7 @@
         "@typescript-eslint/no-use-before-define": [1],
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-var-requires": "off",
+        "jsx-a11y/label-has-associated-control": "off",
         "@typescript-eslint/quotes": [
           2,
           "backtick",

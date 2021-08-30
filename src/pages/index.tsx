@@ -1,14 +1,15 @@
 import Head from "next/head";
 
-import css from "@/styles/Home.module.css";
+import { Header } from "../components/Header";
 
 export default function Home() {
   return (
-    <div className={css.container}>
+    <>
       <Head>
         <title>Home</title>
       </Head>
-      Home
-    </div>
+      <Header />
+      HOME
+    </>
   );
 }

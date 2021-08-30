@@ -1,0 +1,12 @@
+API_BASE_URL=http://localhost:3001/api/v1
+GOOGLE_MAPS_API_KEY=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk
+
+GITHUB_ID=263340575666923d5816
+GITHUB_SECRET=5599b10483f311fbaad7436d66ae1fb697427e7a
+
+GOOGLE_ID=859984692327-q8i0tf7gm2np3l0d6tfidlp2p52hkevh.apps.googleusercontent.com
+GOOGLE_SECRET=nLqtc4115FKeqr9puudEY8gJ
+
+DATABASE_URL=postgres://postgres:Great123@localhost:5432/easyland_dev
+
+SECRET=test
