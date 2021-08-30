@@ -43,7 +43,7 @@ function checkStatusCode(res: Response, body: JsonResponse) {
   }
 }
 
-async function handleError(error: any, req: Request) {
+async function handleError(error: any /* req: Request */) {
   // logger.error(error.message, {
   //   error,
   //   request: {
@@ -52,8 +52,6 @@ async function handleError(error: any, req: Request) {
   //     body: req.body,
   //   },
   // });
-
-  console.error(error.message);
 
   if (error instanceof ApiError) {
     if (error.statusCode === 401) {
@@ -78,7 +76,6 @@ export default async function request(
   if (data) {
     init.body = JSON.stringify(data);
   }
-
   const req = new Request(url, init);
 
   try {
