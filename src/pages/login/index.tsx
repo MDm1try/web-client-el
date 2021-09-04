@@ -106,7 +106,6 @@ function Login({ router, providers }: Props) {
 
 export async function getServerSideProps() {
   const providers = await getProviders();
-
   return {
     props: {
       providers,
