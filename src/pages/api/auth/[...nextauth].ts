@@ -1,4 +1,6 @@
-import NextAuth from "next-auth";
+import { refreshAccessToken } from "@/helpers/google";
+import NextAuth, { User } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import Providers from "next-auth/providers";
 
 import api from "../../../lib/api";
@@ -44,9 +46,10 @@ export default NextAuth({
     Providers.Google({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
-      profile: (profile: any) =>
-        // verify token https://oauth2.googleapis.com/tokeninfo?id_token
-        profile,
+      authorizationUrl: process.env.GOOGLE_AUTHORIZATION_URL,
+      // profile: (profile: any) =>
+      //   // verify token https://oauth2.googleapis.com/tokeninfo?id_token
+      //   profile,
     }),
     // Providers.Email({
     //   server: process.env.EMAIL_SERVER,
@@ -128,17 +131,35 @@ export default NextAuth({
   callbacks: {
     // async signIn(user, account, profile) { return true },
     // async redirect(url, baseUrl) { return baseUrl },
-    async session(session, user) {
-      // eslint-disable-next-line no-param-reassign
-      session.accessToken = user.accessToken;
+    async session(session, token: JWT | User) {
+      if (token) {
+        // eslint-disable-next-line no-param-reassign
+        session.user = token.user as User;
+        // eslint-disable-next-line no-param-reassign
+        session.accessToken = token.accessToken as string;
+        // eslint-disable-next-line no-param-reassign
+        session.error = token.error as string;
+      }
       return session;
     },
-    async jwt(token, user) {
-      if (user?.accessToken) {
-        // eslint-disable-next-line no-param-reassign
-        token.accessToken = user.accessToken;
+    async jwt(token: JWT, user: User, account: any) {
+      // Initial sign in
+      if (account && user) {
+        return {
+          accessToken: account.accessToken,
+          accessTokenExpires: Date.now() + account.expires_in * 1000,
+          refreshToken: account.refresh_token,
+          user,
+        };
       }
-      return token;
+
+      // Return previous token if the access token has not expired yet
+      if (Date.now() < (token.accessTokenExpires as number)) {
+        return token;
+      }
+
+      // Access token has expired, try to update it
+      return refreshAccessToken(token);
     },
   },
 
