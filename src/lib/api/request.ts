@@ -1,4 +1,4 @@
-// import { getAccessToken, signIn } from "../../services/authentication";
+import { getSession } from "next-auth/client";
 import { JsonBody, JsonResponse } from "./types";
 import { ApiError } from "../error";
 
@@ -11,14 +11,27 @@ async function parseBody(res: Response): Promise<JsonResponse> {
 }
 
 async function createHeaders() {
-  const token = ``; // await getAccessToken();
+  let accessToken = ``;
+  let idToken = ``;
+
+  const session = await getSession();
+  if (session) {
+    accessToken = session?.accessToken as string;
+    idToken = session?.idToken as string;
+  }
 
   const headers = new Headers({
     "Content-Type": `application/json`,
   });
 
-  if (token) {
-    headers.append(`Authorization`, `Bearer ${token}`);
+  if (accessToken) {
+    headers.append(`provider`, `own`);
+    headers.append(`access_token`, `Bearer ${accessToken}`);
+  }
+
+  if (idToken) {
+    headers.append(`provider`, `google`);
+    headers.append(`id_token`, idToken);
   }
 
   return headers;

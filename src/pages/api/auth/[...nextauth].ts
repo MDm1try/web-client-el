@@ -44,9 +44,6 @@ export default NextAuth({
     Providers.Google({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
-      profile: (profile: any) =>
-        // verify token https://oauth2.googleapis.com/tokeninfo?id_token
-        profile,
     }),
     // Providers.Email({
     //   server: process.env.EMAIL_SERVER,
@@ -77,7 +74,7 @@ export default NextAuth({
   // The secret should be set to a reasonably long random string.
   // It is used to sign cookies and to sign and encrypt JSON Web Tokens, unless
   // a separate secret is defined explicitly for encrypting the JWT.
-  secret: process.env.SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
 
   session: {
     // Use JSON Web Tokens for session instead of database sessions.
@@ -86,7 +83,7 @@ export default NextAuth({
     jwt: true,
 
     // Seconds - How long until an idle session expires and is no longer valid.
-    // maxAge: 30 * 24 * 60 * 60, // 30 days
+    // maxAge: 1 * 24 * 60 * 60, // 30 days
 
     // Seconds - Throttle how frequently to write to database to extend a session.
     // Use it to limit write operations. Set to 0 to always update the database.
@@ -99,13 +96,15 @@ export default NextAuth({
   // https://next-auth.js.org/configuration/options#jwt
   jwt: {
     // A secret to use for key generation (you should set this explicitly)
-    // secret: `INp8IvdIyeMcoGAgFGoA61DdBglwwSqnXJZkgz8PSnw`,
+    secret: process.env.NEXTAUTH_SECRET,
     // Set to true to use encryption (default: false)
-    // encryption: true,
+    encryption: true,
     // You can define your own encode/decode functions for signing and encryption
     // if you want to override the default behaviour.
-    // encode: async ({ secret, token, maxAge }) => {},
-    // decode: async ({ secret, token, maxAge }) => {},
+    // encode: async ({ secret, token, maxAge }) =>
+    //   encode({ secret, token, maxAge }),
+    // decode: async ({ secret, token, maxAge }) =>
+    //   decode({ secret, token, maxAge }),
   },
 
   // You can define custom pages to override the built-in ones. These will be regular Next.js pages
@@ -131,12 +130,18 @@ export default NextAuth({
     async session(session, user) {
       // eslint-disable-next-line no-param-reassign
       session.accessToken = user.accessToken;
+      // eslint-disable-next-line no-param-reassign
+      session.idToken = user.idToken;
       return session;
     },
-    async jwt(token, user) {
+    async jwt(token, user, account) {
       if (user?.accessToken) {
         // eslint-disable-next-line no-param-reassign
         token.accessToken = user.accessToken;
+      }
+      if (account?.idToken) {
+        // eslint-disable-next-line no-param-reassign
+        token.idToken = account.idToken;
       }
       return token;
     },
@@ -147,5 +152,5 @@ export default NextAuth({
   events: {},
 
   // Enable debug messages in the console if you are having problems
-  debug: true,
+  debug: false,
 });
