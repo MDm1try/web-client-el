@@ -1,9 +1,14 @@
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
 
+import { signOut } from "next-auth/client";
 import css from "./Header.module.css";
 
-function Header() {
+type Props = {
+  showSignOut?: boolean;
+};
+
+function Header({ showSignOut }: Props) {
   const { t } = useTranslation(`common`);
 
   return (
@@ -29,6 +34,15 @@ function Header() {
           <Link href="/post/new-ad">
             <a className="btn btn-outline-light">{t(`post-an-ad`)}</a>
           </Link>
+          {showSignOut && (
+            <button
+              type="button"
+              className="btn btn-primary ms-2"
+              onClick={() => signOut()}
+            >
+              Sign Out
+            </button>
+          )}
         </div>
       </div>
     </nav>

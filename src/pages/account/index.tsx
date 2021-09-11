@@ -1,14 +1,12 @@
 import Head from "next/head";
-import { withRouter, NextRouter } from "next/router";
+import { useRouter } from "next/router";
 
 import { Header } from "../../components/Header";
 import AccountTabs from "./AccountTabs";
 
-type Props = {
-  router: NextRouter;
-};
+function Account() {
+  const router = useRouter();
 
-function Account({ router }: Props) {
   const { tab } = router.query as { tab: string };
 
   return (
@@ -16,10 +14,12 @@ function Account({ router }: Props) {
       <Head>
         <title>Account</title>
       </Head>
-      <Header />
+      <Header showSignOut />
       <AccountTabs activeTab={tab} />
     </>
   );
 }
 
-export default withRouter(Account);
+Account.private = true;
+
+export default Account;

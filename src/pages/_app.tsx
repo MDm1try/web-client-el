@@ -1,11 +1,22 @@
-import { AppProps } from "next/app";
+import { NextComponentType, NextPageContext } from "next";
+import { Router } from "next/router";
 import { Provider } from "next-auth/client";
+
+import { Auth } from "@/components/Auth";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import "@/styles/global.css";
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+type Props = {
+  Component: NextComponentType<NextPageContext, any, any> & {
+    private?: boolean;
+  };
+  router: Router;
+  pageProps: any;
+};
+
+export default function MyApp({ Component, pageProps }: Props) {
   return (
     <Provider
       // Provider options are not required but can be useful in situations where
@@ -27,7 +38,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       }}
       session={pageProps.session}
     >
-      <Component {...pageProps} />
+      {Component.private ? (
+        <Auth>
+          <Component {...pageProps} />
+        </Auth>
+      ) : (
+        <Component {...pageProps} />
+      )}
     </Provider>
   );
 }
