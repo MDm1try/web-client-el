@@ -21,6 +21,6 @@ export function createAcceptInvitationUrl() {
   return createUrl(`/auth/invite/accept`);
 }
 
-export function createUpdateUserPhoneUrl() {
+export function createUserPhoneUrl() {
   return createUrl(`/secure/profile/phone`);
 }
