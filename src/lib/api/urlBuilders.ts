@@ -20,3 +20,7 @@ export function createRegisterUrl() {
 export function createAcceptInvitationUrl() {
   return createUrl(`/auth/invite/accept`);
 }
+
+export function createUpdateUserPhoneUrl() {
+  return createUrl(`/secure/profile/phone`);
+}

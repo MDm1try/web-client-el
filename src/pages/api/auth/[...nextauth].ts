@@ -28,7 +28,7 @@ export default NextAuth({
           if (user) {
             return user;
           }
-        } catch (err) {
+        } catch (err: any) {
           const errorMessage = err.response?.data?.error || err.message;
           throw new Error(`${errorMessage}&email=${credentials.email}`);
         }

@@ -2,9 +2,9 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 import { Header } from "../../components/Header";
-import AccountTabs from "./AccountTabs";
+import { Account } from "../../features/account";
 
-function Account() {
+function AccountPage() {
   const router = useRouter();
 
   const { tab } = router.query as { tab: string };
@@ -15,11 +15,11 @@ function Account() {
         <title>Account</title>
       </Head>
       <Header showSignOut />
-      <AccountTabs activeTab={tab} />
+      <Account activeTab={tab} />
     </>
   );
 }
 
-Account.private = true;
+AccountPage.private = true;
 
-export default Account;
+export default AccountPage;
