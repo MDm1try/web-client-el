@@ -4,6 +4,7 @@ import Tab from "react-bootstrap/Tab";
 
 import { ACCOUNT_TABS_MAP } from "@/constants";
 import { MobileChangeForm } from "../MobileChangeForm";
+import { NameChangeForm } from "../NameChangeForm";
 
 function AccountTabs() {
   return (
@@ -15,7 +16,9 @@ function AccountTabs() {
         <Accordion>
           <Accordion.Item eventKey="0">
             <Accordion.Header>Изменить имя</Accordion.Header>
-            <Accordion.Body>NameChangeForm</Accordion.Body>
+            <Accordion.Body>
+              <NameChangeForm />
+            </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="1">
             <Accordion.Header>Изменить мобильный телефон</Accordion.Header>

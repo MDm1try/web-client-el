@@ -24,3 +24,7 @@ export function createAcceptInvitationUrl() {
 export function createUpdateUserPhoneUrl() {
   return createUrl(`/secure/profile/phone`);
 }
+
+export function createUserName() {
+  return createUrl(`/secure/profile/name`);
+}
