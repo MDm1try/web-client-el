@@ -1,6 +1,9 @@
 import { useForm } from "react-hook-form";
 import classcat from "classcat";
 import useNameUpdate from "@/hooks/user/useNameUpdate";
+import { useEffect, useMemo } from "react";
+import useName from "@/hooks/user/useName";
+import { UK_CODE } from "@/constants";
 
 type FormValues = {
   firstName: string;
@@ -11,14 +14,44 @@ function NameChangeForm() {
   const {
     handleSubmit,
     register,
+    setValue,
+    watch,
     formState: { errors, isSubmitted },
   } = useForm<FormValues>();
 
+  const { data, error: loadingError, isLoading } = useName();
   const [{ isPending, error }, update] = useNameUpdate();
 
   const handleRequest = ({ firstName, lastName }: FormValues) => {
     update(firstName, lastName);
   };
+
+  const currentFirstName = watch(`firstName`);
+  const currentLastName = watch(`lastName`);
+
+  useEffect(() => {
+    if (data?.firstName) {
+      setValue(`firstName`, data.firstName);
+    }
+    if (data?.lastName) {
+      setValue(`lastName`, data.lastName);
+    }
+  }, [data, setValue]);
+
+  const disabled = useMemo(() => {
+    if (
+      data?.firstName &&
+      data?.lastName &&
+      currentFirstName &&
+      currentLastName
+    ) {
+      return (
+        data?.firstName === currentFirstName &&
+        data?.lastName === currentLastName
+      );
+    }
+    return false;
+  }, [data?.firstName, data?.lastName, currentFirstName, currentLastName]);
 
   return (
     <form
@@ -66,10 +99,13 @@ function NameChangeForm() {
         <div className="invalid-feedback">{errors?.lastName?.message}</div>
       </div>
       {error && <div className="text-danger mb-3">{error.message}</div>}
+      {loadingError && (
+        <div className="text-danger mb-3">{loadingError.message}</div>
+      )}
       <button
         type="submit"
         className="btn btn-primary mt-3"
-        disabled={isPending}
+        disabled={isPending || isLoading || disabled}
       >
         Сохранить
       </button>
