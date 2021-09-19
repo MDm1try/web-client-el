@@ -3,7 +3,6 @@ import classcat from "classcat";
 import useNameUpdate from "@/hooks/user/useNameUpdate";
 import { useEffect, useMemo } from "react";
 import useName from "@/hooks/user/useName";
-import { UK_CODE } from "@/constants";
 
 type FormValues = {
   firstName: string;
