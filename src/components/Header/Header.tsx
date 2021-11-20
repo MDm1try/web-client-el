@@ -1,7 +1,7 @@
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-
 import { signOut } from "next-auth/client";
+
 import css from "./Header.module.css";
 
 type Props = {

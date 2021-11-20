@@ -10,7 +10,7 @@ type State = {
 };
 
 async function handleUpateName(firstName: string, lastName: string) {
-  await api.put(api.createUserName(), { firstName, lastName });
+  await api.put(api.createUserNameUrl(), { firstName, lastName });
 
   return true;
 }

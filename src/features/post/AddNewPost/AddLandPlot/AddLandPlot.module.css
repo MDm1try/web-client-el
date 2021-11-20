@@ -1,0 +1,28 @@
+.mapContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.gmnoprint > div > div[role="button"] {
+  width: 44px;
+  height: 44px;
+  vertical-align: middle;
+  line-height: 40px;
+  text-align: center;
+}
+
+.removeBtn > i {
+  opacity: 0.65;
+}
+
+.removeBtn > i:active,
+.removeBtn > i:focus {
+  opacity: 1;
+}
+
+.removeBtn:active,
+.removeBtn:focus,
+.removeBtn:active:focus {
+  outline: none;
+  box-shadow: none;
+}

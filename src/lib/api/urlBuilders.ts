@@ -25,6 +25,14 @@ export function createUserPhoneUrl() {
   return createUrl(`/secure/profile/phone`);
 }
 
-export function createUserName() {
+export function createUserNameUrl() {
   return createUrl(`/secure/profile/name`);
+}
+
+export function createParcelInfoInUrl(cadNum: string) {
+  return createUrl(`/secure/parcel`, { cadNum });
+}
+
+export function createPostUrl() {
+  return createUrl(`/secure/posts`);
 }

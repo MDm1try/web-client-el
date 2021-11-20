@@ -1,9 +1,27 @@
-
 .btn-primary {
-    background-color: var(--them-green-color);
-    border-color: var(--them-green-color)
+  background-color: var(--them-green-color);
+  border-color: var(--them-green-color);
 }
 
 .btn-primary:hover {
-    background-color: var(--them-dark-color);
+  background-color: var(--them-dark-color);
+}
+
+.bi-2x {
+  font-size: 2em;
+}
+.bi-3x {
+  font-size: 3em;
+}
+.bi-4x {
+  font-size: 4em;
+}
+.bi-5x {
+  font-size: 5em;
+}
+
+.btn-xs {
+  padding: 0.125rem 0.35rem;
+  font-size: 0.75rem;
+  border-radius: 0.175rem;
 }

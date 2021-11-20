@@ -22,6 +22,7 @@ async function createHeaders() {
 
   const headers = new Headers({
     "Content-Type": `application/json`,
+    Accept: `application/json`,
   });
 
   if (accessToken) {

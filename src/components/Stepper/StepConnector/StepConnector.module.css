@@ -1,0 +1,12 @@
+.container {
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+.line {
+  display: block;
+  border-color: rgb(189, 189, 189);
+  border-top-style: solid;
+  border-top-width: 1px;
+}
