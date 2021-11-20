@@ -1,1 +1,8 @@
-{}
+{
+  "email-not-valid": "Введите валидный Email!",
+  "required-email": "Введите Email",
+  "required-password": "Введите пароль",
+  "forgot-password": "Восстановление пароля",
+  "long-password": "Пароль должен содержать минимум 6 символов",
+  "token-not-valid": "Токен не действительный"
+}

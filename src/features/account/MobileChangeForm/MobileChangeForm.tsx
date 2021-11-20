@@ -20,7 +20,7 @@ function MobileChangeForm() {
 
   const currentPhone = watch(`phone`);
 
-  const { data, error: loadignError, isLoading } = usePhone();
+  const { data, error: loadingError, isLoading } = usePhone();
   const [{ isPending, error }, updatePhoneNumber] = usePhoneUpdate();
 
   useEffect(() => {
@@ -71,8 +71,8 @@ function MobileChangeForm() {
         <div className="invalid-feedback">{errors?.phone?.message}</div>
       </div>
       {error && <div className="text-danger mb-3">{error.message}</div>}
-      {loadignError && (
-        <div className="text-danger mb-3">{loadignError.message}</div>
+      {loadingError && (
+        <div className="text-danger mb-3">{loadingError.message}</div>
       )}
       <button
         type="submit"

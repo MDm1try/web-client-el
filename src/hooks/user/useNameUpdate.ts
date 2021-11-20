@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { mutate } from "swr";
 
 import api from "../../lib/api";
 import usePromise from "../usePromise";
@@ -9,8 +10,11 @@ type State = {
   error?: Error;
 };
 
-async function handleUpateName(firstName: string, lastName: string) {
-  await api.put(api.createUserNameUrl(), { firstName, lastName });
+async function handleUpdateName(firstName: string, lastName: string) {
+  const url = api.createUserNameUrl();
+  await api.put(url, { firstName, lastName });
+
+  mutate(url, { firstName, lastName });
 
   return true;
 }
@@ -23,7 +27,7 @@ function useNameUpdate(): [
 
   const update = useCallback(
     (firstName: string, lastName: string) =>
-      dispatch(handleUpateName(firstName, lastName)),
+      dispatch(handleUpdateName(firstName, lastName)),
     [dispatch],
   );
 

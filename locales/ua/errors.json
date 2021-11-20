@@ -1,1 +1,8 @@
-{}
+{
+  "email-not-valid": "Введіть валідний Email!",
+  "required-email": "Введіть Email",
+  "required-password": "Введіть пароль",
+  "forgot-password": "Відновлення паролю",
+  "long-password": "Пароль повинен містити щонайменьше 6 символів",
+  "token-not-valid": "Токен не є дійсним"
+}

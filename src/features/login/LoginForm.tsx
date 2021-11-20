@@ -91,7 +91,7 @@ const LoginForm = ({
         <div className="invalid-feedback">{errors?.password?.message}</div>
       </div>
       <div className="mb-4">
-        <Link href="/reset">
+        <Link href="/forgot_password">
           <a>{t(`can-not-login?`)}</a>
         </Link>
       </div>

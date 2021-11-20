@@ -36,3 +36,15 @@ export function createParcelInfoInUrl(cadNum: string) {
 export function createPostUrl() {
   return createUrl(`/secure/posts`);
 }
+
+export function createForgotPasswordUrl() {
+  return createUrl(`/auth/password/forgot`);
+}
+
+export function createTokenResetPasswordUrl(token: string) {
+  return createUrl(`/auth/password/reset/${token}`);
+}
+
+export function createResetPasswordUrl() {
+  return createUrl(`/auth/password/reset`);
+}
