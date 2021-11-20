@@ -10,7 +10,7 @@ type State = {
   error?: Error;
 };
 
-async function handleUpateName(firstName: string, lastName: string) {
+async function handleUpdateName(firstName: string, lastName: string) {
   const url = api.createUserNameUrl();
   await api.put(url, { firstName, lastName });
 
@@ -27,7 +27,7 @@ function useNameUpdate(): [
 
   const update = useCallback(
     (firstName: string, lastName: string) =>
-      dispatch(handleUpateName(firstName, lastName)),
+      dispatch(handleUpdateName(firstName, lastName)),
     [dispatch],
   );
 

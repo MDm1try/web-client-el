@@ -28,3 +28,15 @@ export function createUserPhoneUrl() {
 export function createUserNameUrl() {
   return createUrl(`/secure/profile/name`);
 }
+
+export function createForgotPasswordUrl() {
+  return createUrl(`/auth/password/forgot`);
+}
+
+export function createTokenResetPasswordUrl(token: string) {
+  return createUrl(`/auth/password/reset/${token}`);
+}
+
+export function createResetPasswordUrl() {
+  return createUrl(`/auth/password/reset`);
+}
