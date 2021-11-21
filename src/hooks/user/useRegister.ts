@@ -16,7 +16,7 @@ async function handleRegister(
   confirmPassword: string,
 ) {
   await api.post(api.createRegisterUrl(), { email, password, confirmPassword });
-  Router.push(`/registeration_successfull`);
+  Router.push(`/registration_successfull`);
 
   return true;
 }

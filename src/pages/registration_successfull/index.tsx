@@ -1,9 +1,9 @@
 import Head from "next/head";
 import Link from "next/link";
 
-import css from "./RegisterationSuccess.module.css";
+import css from "./RegistrationSuccess.module.css";
 
-export default function RegisterationSuccess() {
+function RegistrationSuccess() {
   return (
     <div className={css.container}>
       <Head>
@@ -17,3 +17,5 @@ export default function RegisterationSuccess() {
     </div>
   );
 }
+
+export default RegistrationSuccess;
