@@ -31,7 +31,7 @@ function Header({ showSignOut }: Props) {
           <Link href="/account">
             <a className={`${css.btnMyAccount} btn`}>{t(`my-profile`)}</a>
           </Link>
-          <Link href="/post/new-ad">
+          <Link href="/account/new-post">
             <a className="btn btn-outline-light">{t(`post-an-ad`)}</a>
           </Link>
           {showSignOut && (

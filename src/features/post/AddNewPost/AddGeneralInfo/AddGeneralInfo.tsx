@@ -2,6 +2,7 @@ import { useFormContext } from "react-hook-form";
 import Dropdown from "react-bootstrap/Dropdown";
 import useTranslation from "next-translate/useTranslation";
 import classcat from "classcat";
+import { useRouter } from "next/router";
 
 import { LAND_PURPOSE_OPTIONS, POST_TYPE_OPTIONS } from "@/constants";
 import {
@@ -18,6 +19,7 @@ type Props = {
 };
 
 function AddGeneralInfo({ onNext }: Props) {
+  const router = useRouter();
   const { t } = useTranslation(`post`);
   const {
     handleSubmit,
@@ -241,8 +243,7 @@ function AddGeneralInfo({ onNext }: Props) {
         <button
           type="button"
           className="btn btn-primary"
-          onClick={onNext}
-          disabled
+          onClick={() => router.push(`/account`)}
         >
           Предыдущая
         </button>
