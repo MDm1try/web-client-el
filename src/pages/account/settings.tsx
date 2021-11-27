@@ -1,22 +1,22 @@
 import Head from "next/head";
 
+import { AccountLayout, AccountSettings } from "@/features/account";
 import { Header } from "../../components/Header";
-import { AccountLayout } from "../../features/account";
 
-function AccountPage() {
+function SettingsPage() {
   return (
     <>
       <Head>
-        <title>Account</title>
+        <title>Settings</title>
       </Head>
       <Header showSignOut />
       <AccountLayout>
-        <div>Account</div>
+        <AccountSettings />
       </AccountLayout>
     </>
   );
 }
 
-AccountPage.private = true;
+SettingsPage.private = true;
 
-export default AccountPage;
+export default SettingsPage;
