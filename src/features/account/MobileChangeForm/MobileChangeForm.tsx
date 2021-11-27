@@ -40,6 +40,11 @@ function MobileChangeForm() {
     return false;
   }, [data?.phone, currentPhone]);
 
+  const isPhoneValid = useMemo(
+    () => !errors?.phone?.message && !error?.message,
+    [error?.message, errors?.phone?.message],
+  );
+
   return (
     <form
       onSubmit={handleSubmit(handleRequest)}
@@ -56,8 +61,8 @@ function MobileChangeForm() {
           className={classcat([
             `form-control`,
             {
-              "is-invalid": !!errors?.phone?.message,
-              "is-valid": isSubmitted && !errors?.phone?.message,
+              "is-invalid": !isPhoneValid,
+              "is-valid": isSubmitted && isPhoneValid,
             },
           ])}
           {...register(`phone`, {

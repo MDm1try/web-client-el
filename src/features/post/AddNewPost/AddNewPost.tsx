@@ -8,6 +8,7 @@ import {
   CurrencyCodeEnum,
   FileUploadTask,
   ImagePostEnum,
+  Media,
   PostForm,
 } from "@/types";
 import useFileUpload from "@/hooks/useFileUpload";
@@ -89,22 +90,24 @@ function AddNewPost() {
     return files.map((file) => createFileUploadTask(file, optionsMap));
   }, [methods]);
 
-  const createPost = useCallback(() => {
-    const values = methods.getValues();
-    create({
-      name: values.name,
-      cadNum: values.cadNum,
-      area: values.area,
-      type: values.type,
-      purpose: values.purpose,
-      cost: values.cost,
-      currency: values.currency,
-      description: values.description,
-      shape: values.shape,
-      medias: medias ?? [],
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const createPost = useCallback(
+    (medias: Media[] = []) => {
+      const values = methods.getValues();
+      create({
+        name: values.name,
+        cadNum: values.cadNum,
+        area: values.area,
+        type: values.type,
+        purpose: values.purpose,
+        cost: values.cost,
+        currency: values.currency,
+        description: values.description,
+        shape: values.shape,
+        medias,
+      });
+    },
+    [create, methods],
+  );
 
   const handleSubmit = useCallback(() => {
     const tasks = getUploadTasks();
@@ -142,10 +145,22 @@ function AddNewPost() {
   ]);
 
   useEffect(() => {
-    if (!uploadingError && !isMediaLoading && progress === 1) {
-      createPost();
+    if (
+      !uploadingError &&
+      !isMediaLoading &&
+      progress === 1 &&
+      !isPostCreating
+    ) {
+      createPost(medias);
     }
-  }, [isMediaLoading, uploadingError, progress, createPost]);
+  }, [
+    isMediaLoading,
+    uploadingError,
+    progress,
+    createPost,
+    medias,
+    isPostCreating,
+  ]);
 
   useEffect(() => {
     if (!isPostCreating && !creatingPostError && isPostCreated) {
