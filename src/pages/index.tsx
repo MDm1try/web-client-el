@@ -8,7 +8,7 @@ export default function Home() {
       <Head>
         <title>Home</title>
       </Head>
-      <Header />
+      <Header showSignOut />
       HOME
     </>
   );
