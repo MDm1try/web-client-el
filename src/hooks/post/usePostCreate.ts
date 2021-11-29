@@ -1,4 +1,4 @@
-import { Post } from "@/types";
+import { NewPost } from "@/types";
 import { useCallback } from "react";
 
 import api from "../../lib/api";
@@ -10,17 +10,17 @@ type State = {
   error?: Error;
 };
 
-async function handleAddPost(newPost: Post) {
-  await api.post(api.createPostUrl(), newPost);
+async function handleAddPost(newPost: NewPost) {
+  await api.post(api.createPostsUrl(), newPost);
 
   return true;
 }
 
-function usePostCreate(): [State, (newPost: Post) => Promise<boolean>] {
+function usePostCreate(): [State, (newPost: NewPost) => Promise<boolean>] {
   const [{ isPending, error, data }, dispatch] = usePromise();
 
   const create = useCallback(
-    (newPost: Post) => dispatch(handleAddPost(newPost)),
+    (newPost: NewPost) => dispatch(handleAddPost(newPost)),
     [dispatch],
   );
 

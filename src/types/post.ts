@@ -7,7 +7,7 @@ export enum CurrencyCodeEnum {
 }
 
 export enum CurrencyFontEnum {
-  "UAH" = `грн.`,
+  "UAH" = `грн`,
   "USD" = `$`,
   "EUR" = `€`,
 }
@@ -72,7 +72,12 @@ export type MapForm = {
 
 export type PostForm = GeneralInfoPostForm & ImagePostForm & MapForm;
 
-export type Post = GeneralInfoPostForm &
+export type NewPost = GeneralInfoPostForm &
   MapForm & {
     medias: Media[];
   };
+
+export type Post = GeneralInfoPostForm & {
+  id: number;
+  medias: Media[];
+};

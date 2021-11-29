@@ -33,8 +33,12 @@ export function createParcelInfoInUrl(cadNum: string) {
   return createUrl(`/secure/parcel`, { cadNum });
 }
 
-export function createPostUrl() {
+export function createPostsUrl() {
   return createUrl(`/secure/posts`);
+}
+
+export function createPostUrl(postId: number) {
+  return createUrl(`/secure/posts/${postId}`);
 }
 
 export function createForgotPasswordUrl() {
