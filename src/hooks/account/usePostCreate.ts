@@ -11,7 +11,7 @@ type State = {
 };
 
 async function handleAddPost(newPost: NewPost) {
-  await api.post(api.createPostsUrl(), newPost);
+  await api.post(api.createAccountPostsUrl(), newPost);
 
   return true;
 }

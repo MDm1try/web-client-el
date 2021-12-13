@@ -18,7 +18,7 @@ module.exports = nextTranslate({
     includePaths: [path.join(__dirname, "src/styles")],
   },
   images: {
-    domains: ["localhost"],
+    domains: ["localhost", "firebasestorage.googleapis.com"],
   },
   env: {
     API_BASE_URL: process.env.API_BASE_URL,
@@ -29,5 +29,6 @@ module.exports = nextTranslate({
     FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
     FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
     FIREBASE: process.env.FIREBASE,
+    IMAGE_SERVICE_URL: process.env.IMAGE_SERVICE_URL,
   },
 });

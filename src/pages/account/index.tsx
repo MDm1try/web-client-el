@@ -1,5 +1,6 @@
 import Head from "next/head";
 
+import { AccountPosts } from "@/features/post";
 import { Header } from "../../components/Header";
 import { AccountLayout } from "../../features/account";
 
@@ -11,7 +12,7 @@ function AccountPage() {
       </Head>
       <Header showSignOut />
       <AccountLayout>
-        <div>Account</div>
+        <AccountPosts />
       </AccountLayout>
     </>
   );

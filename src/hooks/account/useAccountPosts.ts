@@ -5,17 +5,17 @@ import api from "../../lib/api";
 
 type State = {
   isLoading: boolean;
-  data?: Post;
+  posts?: Post[];
   error?: Error;
 };
 
-function usePost(postId: number): State {
+function useAccountPosts(): State {
   const { data, error } = useSWR<any, Error>(
-    api.createPostUrl(postId),
+    api.createAccountPostsUrl(),
     api.get,
   );
 
-  return { error, data, isLoading: !error && !data };
+  return { error, posts: data, isLoading: !error && !data };
 }
 
-export default usePost;
+export default useAccountPosts;

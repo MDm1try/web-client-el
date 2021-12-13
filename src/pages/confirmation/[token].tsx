@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-import useAcceptInvitation from "@/hooks/user/useAcceptInvitation";
+import useAcceptInvitation from "@/hooks/account/useAcceptInvitation";
 
 import css from "./Confirmation.module.css";
 

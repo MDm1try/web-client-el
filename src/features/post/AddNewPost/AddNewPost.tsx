@@ -13,7 +13,7 @@ import {
 } from "@/types";
 import useFileUpload from "@/hooks/useFileUpload";
 import { createFileUploadTask } from "@/utils/upload";
-import usePostCreate from "@/hooks/post/usePostCreate";
+import usePostCreate from "@/hooks/account/usePostCreate";
 import { useRouter } from "next/router";
 import { AddLandPlot } from "./AddLandPlot";
 import { AddImages } from "./AddImages";

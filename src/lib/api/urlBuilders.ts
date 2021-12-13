@@ -33,11 +33,11 @@ export function createParcelInfoInUrl(cadNum: string) {
   return createUrl(`/secure/parcel`, { cadNum });
 }
 
-export function createPostsUrl() {
+export function createAccountPostsUrl() {
   return createUrl(`/secure/posts`);
 }
 
-export function createPostUrl(postId: number) {
+export function createAccountPostUrl(postId: number) {
   return createUrl(`/secure/posts/${postId}`);
 }
 

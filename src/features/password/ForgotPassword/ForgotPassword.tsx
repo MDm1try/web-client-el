@@ -1,4 +1,4 @@
-import useEmailReset from "@/hooks/user/useEmailReset";
+import useEmailReset from "@/hooks/account/useEmailReset";
 import { ForgotPasswordForm } from "./ForgotPasswordForm";
 import { SuccessForgotPassword } from "./SuccessForgotPassword";
 

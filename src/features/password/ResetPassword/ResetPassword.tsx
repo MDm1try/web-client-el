@@ -1,4 +1,4 @@
-import usePasswordToken from "@/hooks/user/usePasswordToken";
+import usePasswordToken from "@/hooks/account/usePasswordToken";
 import useTranslation from "next-translate/useTranslation";
 
 import classcat from "classcat";

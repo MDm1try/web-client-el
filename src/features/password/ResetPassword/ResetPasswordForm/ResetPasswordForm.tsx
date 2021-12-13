@@ -1,6 +1,6 @@
 import classcat from "classcat";
 import { useForm } from "react-hook-form";
-import usePasswordReset from "@/hooks/user/usePassworsReset";
+import usePasswordReset from "@/hooks/account/usePassworsReset";
 import useTranslation from "next-translate/useTranslation";
 
 import { SuccessResetPassword } from "../SuccessResetPassword";

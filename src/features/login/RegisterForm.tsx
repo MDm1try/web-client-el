@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import classcat from "classcat";
 import useTranslation from "next-translate/useTranslation";
 
-import useRegister from "@/hooks/user/useRegister";
+import useRegister from "@/hooks/account/useRegister";
 
 type FormValues = {
   email: string;

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import classcat from "classcat";
-import usePhoneUpdate from "@/hooks/user/usePhoneUpdate";
-import usePhone from "@/hooks/user/usePhone";
+import usePhoneUpdate from "@/hooks/account/usePhoneUpdate";
+import usePhone from "@/hooks/account/usePhone";
 import { useEffect, useMemo } from "react";
 import { UK_CODE } from "@/constants";
 

@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import classcat from "classcat";
-import useNameUpdate from "@/hooks/user/useNameUpdate";
+import useNameUpdate from "@/hooks/account/useNameUpdate";
 import { useEffect, useMemo } from "react";
-import useName from "@/hooks/user/useName";
+import useName from "@/hooks/account/useName";
 
 type FormValues = {
   firstName: string;
