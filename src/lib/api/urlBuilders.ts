@@ -1,5 +1,7 @@
 import qs from "qs";
 
+import { QueryPostOptions } from "../../types";
+
 const baseUrl = process.env.API_BASE_URL;
 
 export function createUrl(url: string, params?: Record<string, unknown>) {
@@ -35,6 +37,10 @@ export function createParcelInfoInUrl(cadNum: string) {
 
 export function createAccountPostsUrl() {
   return createUrl(`/secure/posts`);
+}
+
+export function createPostsUrl(options?: QueryPostOptions) {
+  return createUrl(`/shared/posts`, options);
 }
 
 export function createAccountPostUrl(postId: number) {
