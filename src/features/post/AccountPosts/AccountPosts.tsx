@@ -1,4 +1,4 @@
-import { Post } from "@/components/Post";
+import { PostCard } from "@/components/PostCard";
 import useAccountPosts from "@/hooks/account/useAccountPosts";
 
 function AccountPosts() {
@@ -13,7 +13,7 @@ function AccountPosts() {
         </div>
       )}
       {posts?.map((post) => (
-        <Post key={post.id} post={post} />
+        <PostCard key={post.id} post={post} />
       ))}
     </>
   );
