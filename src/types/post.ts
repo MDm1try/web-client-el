@@ -81,3 +81,11 @@ export type Post = GeneralInfoPostForm & {
   id: number;
   medias: Media[];
 };
+
+export type QueryPostOptions = {
+  sortOrder: string;
+  sortBy: string;
+  limit: number;
+  search: string;
+  page: number;
+};
