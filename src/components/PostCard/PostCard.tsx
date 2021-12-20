@@ -3,7 +3,7 @@ import SwipeableViews from "react-swipeable-views";
 
 import { Post as PostType } from "@/types";
 import { getImageUri } from "@/utils/media";
-import css from "./Post.module.css";
+import css from "./PostCard.module.css";
 
 type Props = {
   post: PostType;
