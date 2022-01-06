@@ -6,12 +6,15 @@ import { useRouter } from "next/router";
 
 import { LAND_PURPOSE_OPTIONS, POST_TYPE_OPTIONS } from "@/constants";
 import {
+  CostPerEnum,
   CurrencyCodeEnum,
   CurrencyFontEnum,
   GeneralInfoPostForm,
+  PostTypeEnum,
 } from "@/types";
 
 import getParcelInfo from "@/lib/parcel/getParcelInfo";
+import { useMemo } from "react";
 import css from "./AddGeneralInfo.module.css";
 
 type Props = {
@@ -44,11 +47,25 @@ function AddGeneralInfo({ onNext }: Props) {
     }
   };
 
+  const handleSelectCostPer = (key: string | null) => {
+    if (key) {
+      setValue(`costPer`, key as CostPerEnum);
+    }
+  };
+
   const handleRequest = () => {
     onNext();
   };
 
   const currency = watch(`currency`);
+  const selectedCostPer = watch(`costPer`);
+  const selectedType = watch(`type`);
+
+  const isRent = useMemo(
+    () => selectedType === PostTypeEnum.LAND_RENT,
+    [selectedType],
+  );
+
   return (
     <form className="mt-4" onSubmit={handleSubmit(handleRequest)}>
       <div className="mb-3 col-6 pe-3">
@@ -119,8 +136,8 @@ function AddGeneralInfo({ onNext }: Props) {
             />
             <Dropdown onSelect={handleSelectCurrency}>
               <Dropdown.Toggle
-                variant="btn btn-secondary"
-                className={css.currencyBtn}
+                variant="btn btn-outline-secondary dropdown-toggle"
+                className={isRent ? `rounded-0` : css.costToggleBtn}
               >
                 {CurrencyFontEnum[currency]}
               </Dropdown.Toggle>
@@ -136,29 +153,52 @@ function AddGeneralInfo({ onNext }: Props) {
                 ))}
               </Dropdown.Menu>
             </Dropdown>
+            {isRent && (
+              <Dropdown onSelect={handleSelectCostPer}>
+                <Dropdown.Toggle
+                  variant="btn btn-outline-secondary dropdown-toggle"
+                  className={css.costToggleBtn}
+                >
+                  {t(selectedCostPer)}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {Object.values(CostPerEnum).map((costPer) => (
+                    <Dropdown.Item
+                      key={costPer}
+                      eventKey={costPer}
+                      active={costPer === selectedCostPer}
+                    >
+                      {t(costPer)}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            )}
           </div>
           <div className="invalid-feedback">{errors?.cost?.message}</div>
         </div>
         <div className="col">
-          <label htmlFor="area" className="form-label">
+          <label htmlFor="areaHectares" className="form-label">
             Площадь участка
           </label>
           <div className="input-group">
             <input
-              id="area"
+              id="areaHectares"
               type="number"
               className={classcat([
                 `form-control`,
-                { "is-invalid": !!errors?.area?.message },
+                { "is-invalid": !!errors?.areaHectares?.message },
               ])}
-              {...register(`area`, {
+              {...register(`areaHectares`, {
                 required: `An area number is required`,
                 valueAsNumber: true,
               })}
             />
             <span className="input-group-text">Га</span>
           </div>
-          <div className="invalid-feedback">{errors?.area?.message}</div>
+          <div className="invalid-feedback">
+            {errors?.areaHectares?.message}
+          </div>
         </div>
       </div>
       <div className="row mb-3">

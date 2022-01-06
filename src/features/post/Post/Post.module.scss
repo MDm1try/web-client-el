@@ -1,0 +1,26 @@
+@import "styles/variables.scss";
+@import "bootstrap/scss/mixins/_breakpoints.scss";
+
+.imageContanier {
+  position: relative;
+  height: 465px;
+  background-color: black;
+}
+
+@include media-breakpoint-down(sm) {
+  .imageContanier {
+    height: 250px;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .imageContanier {
+    height: 350px;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .imageContanier {
+    height: 465px;
+  }
+}

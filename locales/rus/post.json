@@ -9,5 +9,7 @@
   "land-stock-reserve-fund-and-common-use": "Земля запаса, резервного фонда и общего пользования",
   "land-rent": "Аренда земли",
   "land-sale": "Продажа земли",
-  "select-option": "Выбрать вариант"
+  "select-option": "Выбрать вариант",
+  "per-year": "за год",
+  "per-month": "за месяц"
 }

@@ -1,5 +1,5 @@
 export type Media = {
-  id: number;
+  id?: number;
   url: string;
   name: string;
   contentType: string;

@@ -5,11 +5,13 @@ import { Stepper } from "@/components/Stepper";
 import { StepLabel } from "@/components/Stepper/StepLabel";
 import { Step } from "@/components/Stepper/Step";
 import {
+  CostPerEnum,
   CurrencyCodeEnum,
   FileUploadTask,
   ImagePostEnum,
   Media,
   PostForm,
+  PostTypeEnum,
 } from "@/types";
 import useFileUpload from "@/hooks/useFileUpload";
 import { createFileUploadTask } from "@/utils/upload";
@@ -42,10 +44,8 @@ const optionsMap = new Map([
 
 function AddNewPost() {
   const router = useRouter();
-  const [
-    { medias, isPending: isMediaLoading, error: uploadingError, progress },
-    upload,
-  ] = useFileUpload();
+  const [{ isPending: isMediaLoading, error: uploadingError }, upload] =
+    useFileUpload();
   const [
     {
       isPending: isPostCreating,
@@ -59,6 +59,7 @@ function AddNewPost() {
     defaultValues: {
       currency: CurrencyCodeEnum.UAH,
       shape: [],
+      costPer: CostPerEnum.PER_YEAR,
     },
   });
   const [activeStep, setActiveStep] = useState(STEPPER_MAP.ADD_GENERAL_INFO);
@@ -93,18 +94,24 @@ function AddNewPost() {
   const createPost = useCallback(
     (medias: Media[] = []) => {
       const values = methods.getValues();
-      create({
+      const post = {
         name: values.name,
         cadNum: values.cadNum,
-        area: values.area,
+        areaHectares: values.areaHectares,
         type: values.type,
         purpose: values.purpose,
         cost: values.cost,
         currency: values.currency,
         description: values.description,
         shape: values.shape,
+        costPer: values.costPer,
         medias,
-      });
+      };
+
+      if (post.type !== PostTypeEnum.LAND_RENT) {
+        delete post.costPer;
+      }
+      create(post);
     },
     [create, methods],
   );
@@ -112,7 +119,7 @@ function AddNewPost() {
   const handleSubmit = useCallback(() => {
     const tasks = getUploadTasks();
     if (tasks.length) {
-      upload(tasks);
+      upload(tasks, createPost);
     } else {
       createPost();
     }
@@ -145,24 +152,6 @@ function AddNewPost() {
   ]);
 
   useEffect(() => {
-    if (
-      !uploadingError &&
-      !isMediaLoading &&
-      progress === 1 &&
-      !isPostCreating
-    ) {
-      createPost(medias);
-    }
-  }, [
-    isMediaLoading,
-    uploadingError,
-    progress,
-    createPost,
-    medias,
-    isPostCreating,
-  ]);
-
-  useEffect(() => {
     if (!isPostCreating && !creatingPostError && isPostCreated) {
       router.push(`/`);
     }
@@ -180,8 +169,8 @@ function AddNewPost() {
         </Stepper>
         {content}
         <div className="text-end text-error">
-          {creatingPostError}
-          {uploadingError}
+          {creatingPostError?.message}
+          {uploadingError?.message}
         </div>
       </div>
     </FormProvider>

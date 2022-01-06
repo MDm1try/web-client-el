@@ -6,6 +6,11 @@ export enum CurrencyCodeEnum {
   "EUR" = `EUR`,
 }
 
+export enum CostPerEnum {
+  PER_YEAR = `per-year`,
+  PER_MONTH = `per-month`,
+}
+
 export enum CurrencyFontEnum {
   "UAH" = `грн`,
   "USD" = `$`,
@@ -44,10 +49,11 @@ export enum ImagePostEnum {
 export type GeneralInfoPostForm = {
   name: string;
   cadNum: string;
-  area: string;
+  areaHectares: string;
   type: PostTypeEnum;
   purpose: PostPurposeEnum;
   cost: number;
+  costPer?: CostPerEnum;
   currency: CurrencyCodeEnum;
   description: string;
   shape: google.maps.LatLngLiteral[];
@@ -80,6 +86,8 @@ export type NewPost = GeneralInfoPostForm &
 export type Post = GeneralInfoPostForm & {
   id: number;
   medias: Media[];
+  publishedAt?: string;
+  createdAt?: string;
 };
 
 export type QueryPostOptions = {

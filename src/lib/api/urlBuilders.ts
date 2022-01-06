@@ -43,7 +43,7 @@ export function createPostsUrl(options?: QueryPostOptions) {
   return createUrl(`/shared/posts`, options);
 }
 
-export function createAccountPostUrl(postId: number) {
+export function createAccountPostUrl(postId: string) {
   return createUrl(`/secure/posts/${postId}`);
 }
 

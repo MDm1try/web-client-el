@@ -1,7 +1,6 @@
 import Head from "next/head";
 
 import { AddNewPost } from "@/features/post";
-
 import { Header } from "../../components/Header";
 
 function NewAdPage() {

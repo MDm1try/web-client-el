@@ -25,7 +25,10 @@ type State = {
 
 function useFileUpload(
   options?: FirebaseUploadOptions,
-): [State, (tasks: FileUploadTask[]) => void] {
+): [
+  State,
+  (tasks: FileUploadTask[], callback?: (medias: Media[]) => void) => void,
+] {
   const concurrency = options?.concurrency || 20;
   const finsihedCount = useRef(0);
 
@@ -35,7 +38,10 @@ function useFileUpload(
   });
 
   const uploadFiles = useCallback(
-    async (fileUploadTasks: FileUploadTask[]) => {
+    async (
+      fileUploadTasks: FileUploadTask[],
+      callback?: (medias: Media[]) => void,
+    ) => {
       if (uploadState.isPending || !fileUploadTasks.length) {
         return;
       }
@@ -107,6 +113,10 @@ function useFileUpload(
           progress: 1,
           medias,
         });
+
+        if (callback) {
+          callback(medias);
+        }
       } catch (err) {
         const error =
           err instanceof Error ? err : new Error(`Something went wrong`);
