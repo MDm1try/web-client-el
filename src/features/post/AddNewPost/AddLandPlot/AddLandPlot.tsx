@@ -1,6 +1,9 @@
-import { useCallback, useMemo, useState } from "react";
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import { ChangeEvent, useCallback, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import {
+  Autocomplete,
   GoogleMap,
   useJsApiLoader,
   DrawingManager,
@@ -9,7 +12,9 @@ import {
 import { Libraries } from "@react-google-maps/api/dist/utils/make-load-script-url";
 import classcat from "classcat";
 
-import { MapForm } from "@/types";
+import { LocationSuggestion, MapForm } from "@/types";
+import useLocationAutocomplete from "@/hooks/location/useLocationAutocomplete";
+import { LocationAutocomplete } from "@/components/LocationAutocomplete";
 import ukraineGeoJSON from "../../../../../public/ukraineGeo.json";
 import CustomDrawingManagerControls from "./CustomDrawingManagerControls";
 import css from "./AddLandPlot.module.css";
@@ -29,21 +34,32 @@ const UKRAINE_BOUNDS = {
 
 const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
 const center = { lat: -34.397, lng: 150.644 };
-const libraries: Libraries = [`geometry`, `drawing`];
+const libraries: Libraries = [`geometry`, `drawing`, `places`];
+
+let autocompleter: google.maps.places.Autocomplete;
 
 function AddLandPlot({ onBack, onSubmit, isCreating }: Props) {
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey,
     version: `weekly`,
     libraries,
+    language: `uk`,
   });
   const { reset, handleSubmit, setValue, getValues } =
     useFormContext<MapForm>();
   const [drawingModes, setDrawingModes] = useState<
     google.maps.drawing.OverlayType[]
   >([]);
+
   const [shapes, setShapes] = useState<google.maps.Polygon[]>([]);
   const [shapeError, setShapeError] = useState<string>();
+  const [search, setSearch] = useState<string>(``);
+  const [isAutocompleteShown, setIsAutocompleteShown] = useState(false);
+  const {
+    isLoading,
+    locations,
+    error: locationError,
+  } = useLocationAutocomplete({ search });
 
   const handlePolygonComplete = useCallback(
     (polygon: google.maps.Polygon) => {
@@ -116,9 +132,72 @@ function AddLandPlot({ onBack, onSubmit, isCreating }: Props) {
     [onSubmit],
   );
 
+  const handleLoadLocation = (
+    autocomplete: google.maps.places.Autocomplete,
+  ) => {
+    autocompleter = autocomplete;
+
+    console.log(`autocomplete`, autocomplete);
+  };
+
+  const handlePlaceChanged = () => {
+    const place = autocompleter?.getPlace();
+    console.log(
+      place,
+      place?.geometry?.location?.lat(),
+      place?.geometry?.location?.lng(),
+    );
+    console.log(`handlePlaceChanged`);
+  };
+
+  const handleChangeLocation = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setSearch(value);
+    setIsAutocompleteShown(Boolean(value.trim()));
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {};
+
+  const handleSelectLocation = (location: LocationSuggestion) => () => {
+    setSearch(`${location.name}, ${location.regionName}, ${location.coutry}`);
+  };
+
+  console.log(`isAutocompleteShown`, isAutocompleteShown);
   const areShapeExists = useMemo(() => shapes.length > 0, [shapes]);
   return (
-    <form className="mt-4" onSubmit={handleSubmit(handleRequest)}>
+    <form className="row mt-4" onSubmit={handleSubmit(handleRequest)}>
+      <div className="d-flex flex-column flex-md-row pb-3 pb-md-4">
+        <label htmlFor="location" className="col-form-label">
+          Местонахождение
+        </label>
+        <LocationAutocomplete />
+        {locationError && (
+          <div className="text-danger my-3">{locationError?.message}</div>
+        )}
+      </div>
+
+      {isLoaded && (
+        <div className="d-flex flex-column flex-md-row pb-3 pb-md-4">
+          <label htmlFor="location" className="col-form-label">
+            Местонахождение
+          </label>
+          <Autocomplete
+            className="w-100 ms-md-3"
+            types={[`(cities)`]}
+            restrictions={{ country: `ua` }}
+            onLoad={handleLoadLocation}
+            onPlaceChanged={handlePlaceChanged}
+          >
+            <input
+              id="location"
+              className="form-control"
+              type="text"
+              placeholder="Название города"
+            />
+          </Autocomplete>
+        </div>
+      )}
+
       <div className={css.mapContainer}>
         {isLoaded ? (
           <GoogleMap

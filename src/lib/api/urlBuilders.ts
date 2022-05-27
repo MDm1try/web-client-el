@@ -1,6 +1,9 @@
 import qs from "qs";
 
-import { QueryPostOptions } from "../../types";
+import {
+  QueryLocationAutocompleteOptions,
+  QueryPostOptions,
+} from "../../types";
 
 const baseUrl = process.env.API_BASE_URL;
 
@@ -57,4 +60,10 @@ export function createTokenResetPasswordUrl(token: string) {
 
 export function createResetPasswordUrl() {
   return createUrl(`/auth/password/reset`);
+}
+
+export function createLocationAutocompleteUrl(
+  options?: QueryLocationAutocompleteOptions,
+) {
+  return createUrl(`/secure/geo-encoder/location-autocomplete`, options);
 }

@@ -3,7 +3,7 @@ import classcat from "classcat";
 import usePhoneUpdate from "@/hooks/account/usePhoneUpdate";
 import usePhone from "@/hooks/account/usePhone";
 import { useEffect, useMemo } from "react";
-import { UK_CODE } from "@/constants";
+import { PHONE_REGEX, UK_CODE } from "@/constants";
 
 type FormValues = {
   phone: string;
@@ -69,7 +69,7 @@ function MobileChangeForm() {
             required: `A valid phone is required`,
             pattern: {
               message: `Invalid phone number`,
-              value: /^\(?([0-9]{3})\)?([-]?)([0-9]{3})\2([0-9]{4})$/,
+              value: PHONE_REGEX.WITHOUT_CODE,
             },
           })}
         />

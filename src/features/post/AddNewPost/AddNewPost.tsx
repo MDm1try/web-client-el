@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
+import { useSession } from "next-auth/client";
+import { useRouter } from "next/router";
 
 import { Stepper } from "@/components/Stepper";
 import { StepLabel } from "@/components/Stepper/StepLabel";
@@ -14,9 +16,11 @@ import {
   PostTypeEnum,
 } from "@/types";
 import useFileUpload from "@/hooks/useFileUpload";
+import useName from "@/hooks/account/useName";
+import usePhone from "@/hooks/account/usePhone";
 import { createFileUploadTask } from "@/utils/upload";
 import usePostCreate from "@/hooks/account/usePostCreate";
-import { useRouter } from "next/router";
+import { UK_CODE } from "@/constants";
 import { AddLandPlot } from "./AddLandPlot";
 import { AddImages } from "./AddImages";
 import { AddGeneralInfo } from "./AddGeneralInfo";
@@ -44,6 +48,9 @@ const optionsMap = new Map([
 
 function AddNewPost() {
   const router = useRouter();
+  const { data: phoneData } = usePhone();
+  const { data: nameData } = useName();
+  const [session] = useSession();
   const [{ isPending: isMediaLoading, error: uploadingError }, upload] =
     useFileUpload();
   const [
@@ -54,15 +61,16 @@ function AddNewPost() {
     },
     create,
   ] = usePostCreate();
-
   const methods = useForm<PostForm>({
     defaultValues: {
       currency: CurrencyCodeEnum.UAH,
       shape: [],
       costPer: CostPerEnum.PER_YEAR,
+      email: session?.user?.email || ``,
     },
   });
-  const [activeStep, setActiveStep] = useState(STEPPER_MAP.ADD_GENERAL_INFO);
+
+  const [activeStep, setActiveStep] = useState(STEPPER_MAP.DESIGNATE_LAND_PLOT);
 
   const steps = [
     { id: STEPPER_MAP.ADD_GENERAL_INFO, label: `Заполнить общую информацию` },
@@ -156,6 +164,19 @@ function AddNewPost() {
       router.push(`/`);
     }
   }, [isPostCreated, creatingPostError, isPostCreating, router]);
+
+  useEffect(() => {
+    if (phoneData?.phone) {
+      methods.setValue(`phone`, phoneData?.phone.replace(`${UK_CODE}`, ``));
+    }
+  }, [methods, phoneData]);
+
+  useEffect(() => {
+    if (nameData?.firstName || nameData?.lastName) {
+      const name = `${nameData.firstName || ``} ${nameData.lastName || ``}`;
+      methods.setValue(`contactPersonName`, name);
+    }
+  }, [methods, nameData]);
 
   return (
     <FormProvider {...methods}>

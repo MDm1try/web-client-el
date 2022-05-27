@@ -57,6 +57,9 @@ export type GeneralInfoPostForm = {
   currency: CurrencyCodeEnum;
   description: string;
   shape: google.maps.LatLngLiteral[];
+  contactPersonName?: string;
+  phone?: string;
+  email?: string;
 };
 
 export type ImagePostForm = {
@@ -96,4 +99,9 @@ export type QueryPostOptions = {
   limit: number;
   search: string;
   page: number;
+};
+
+export type QueryLocationAutocompleteOptions = {
+  limit?: number;
+  search: string;
 };

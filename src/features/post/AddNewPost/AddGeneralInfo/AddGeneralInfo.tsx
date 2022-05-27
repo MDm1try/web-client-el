@@ -4,7 +4,11 @@ import useTranslation from "next-translate/useTranslation";
 import classcat from "classcat";
 import { useRouter } from "next/router";
 
-import { LAND_PURPOSE_OPTIONS, POST_TYPE_OPTIONS } from "@/constants";
+import {
+  LAND_PURPOSE_OPTIONS,
+  PHONE_REGEX,
+  POST_TYPE_OPTIONS,
+} from "@/constants";
 import {
   CostPerEnum,
   CurrencyCodeEnum,
@@ -14,7 +18,7 @@ import {
 } from "@/types";
 
 import getParcelInfo from "@/lib/parcel/getParcelInfo";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import css from "./AddGeneralInfo.module.css";
 
 type Props = {
@@ -31,9 +35,12 @@ function AddGeneralInfo({ onNext }: Props) {
     setValue,
     watch,
   } = useFormContext<GeneralInfoPostForm>();
+  const [isCadNumUpdating, setIsCadNumUpdating] = useState(false);
 
   const checkCadastralNumber = async (cadNum: string) => {
+    setIsCadNumUpdating(true);
     const { message, isValid, data } = await getParcelInfo(cadNum);
+    setIsCadNumUpdating(false);
     if (isValid) {
       setValue(`shape`, data?.shape ?? []);
       return true;
@@ -81,7 +88,15 @@ function AddGeneralInfo({ onNext }: Props) {
             { "is-invalid": !!errors?.name?.message },
           ])}
           {...register(`name`, {
-            required: `A name is required`,
+            required: `required`,
+            minLength: {
+              message: `must be contain more than 16 symbols`,
+              value: 15,
+            },
+            maxLength: {
+              message: `must be contain less than 70 symbols`,
+              value: 70,
+            },
           })}
         />
         <div className="invalid-feedback">{errors?.name?.message}</div>
@@ -100,7 +115,9 @@ function AddGeneralInfo({ onNext }: Props) {
             valueAsNumber: true,
             validate: {
               notSelected: (value: any) =>
-                value === `select-option` ? `A post type is required` : true,
+                value === `select-option` || Number.isNaN(value)
+                  ? `required`
+                  : true,
             },
           })}
           defaultValue="select-option"
@@ -119,7 +136,7 @@ function AddGeneralInfo({ onNext }: Props) {
       <div className="row mb-3">
         <div className="col">
           <label htmlFor="cost" className="form-label">
-            Цена
+            Цена*
           </label>
           <div className="input-group">
             <input
@@ -130,8 +147,9 @@ function AddGeneralInfo({ onNext }: Props) {
                 { "is-invalid": !!errors?.cost?.message },
               ])}
               {...register(`cost`, {
-                required: `A cost number is required`,
+                required: `required`,
                 valueAsNumber: true,
+                validate: (v) => v > 0 || `should be more than 0`,
               })}
             />
             <Dropdown onSelect={handleSelectCurrency}>
@@ -174,6 +192,7 @@ function AddGeneralInfo({ onNext }: Props) {
                 </Dropdown.Menu>
               </Dropdown>
             )}
+            <div className="invalid-feedback">{errors?.cost?.message}</div>
           </div>
           <div className="invalid-feedback">{errors?.cost?.message}</div>
         </div>
@@ -190,14 +209,15 @@ function AddGeneralInfo({ onNext }: Props) {
                 { "is-invalid": !!errors?.areaHectares?.message },
               ])}
               {...register(`areaHectares`, {
-                required: `An area number is required`,
+                required: `required`,
                 valueAsNumber: true,
+                validate: (v) => Number(v) > 0 || `should be more than 0`,
               })}
             />
             <span className="input-group-text">Га</span>
-          </div>
-          <div className="invalid-feedback">
-            {errors?.areaHectares?.message}
+            <div className="invalid-feedback">
+              {errors?.areaHectares?.message}
+            </div>
           </div>
         </div>
       </div>
@@ -206,24 +226,34 @@ function AddGeneralInfo({ onNext }: Props) {
           <label htmlFor="cadNum" className="form-label">
             Кадастровый номер
           </label>
-          <input
-            id="cadNum"
-            type="text"
-            placeholder="XXXXXXXXX:XX:XXX:XXXX"
-            className={classcat([
-              `form-control`,
-              { "is-invalid": !!errors?.cadNum?.message },
-            ])}
-            {...register(`cadNum`, {
-              required: `A cadastral number is required`,
-              validate: checkCadastralNumber,
-              pattern: {
-                message: `Invalid cadastral number`,
-                value: /^[0-9]{10}:[0-9]{2}:[0-9]{3}:[0-9]{4}$/i,
-              },
-            })}
-          />
-          <div className="invalid-feedback">{errors?.cadNum?.message}</div>
+          <div className="input-group">
+            <input
+              id="cadNum"
+              type="text"
+              placeholder="XXXXXXXXX:XX:XXX:XXXX"
+              className={classcat([
+                `form-control`,
+                { "is-invalid": !!errors?.cadNum?.message },
+              ])}
+              {...register(`cadNum`, {
+                required: `required`,
+                validate: checkCadastralNumber,
+                pattern: {
+                  message: `invalid cadastral number`,
+                  value: /^[0-9]{10}:[0-9]{2}:[0-9]{3}:[0-9]{4}$/i,
+                },
+              })}
+            />
+            {isCadNumUpdating && (
+              <div className="input-group-text">
+                <div
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                />
+              </div>
+            )}
+            <div className="invalid-feedback">{errors?.cadNum?.message}</div>
+          </div>
         </div>
         <div className="col">
           <label htmlFor="purpose" className="form-label">
@@ -239,7 +269,9 @@ function AddGeneralInfo({ onNext }: Props) {
               valueAsNumber: true,
               validate: {
                 notSelected: (value: any) =>
-                  value === `select-option` ? `A purpose is required` : true,
+                  value === `select-option` || Number.isNaN(value)
+                    ? `required`
+                    : true,
               },
             })}
             defaultValue="select-option"
@@ -256,7 +288,55 @@ function AddGeneralInfo({ onNext }: Props) {
           <div className="invalid-feedback">{errors?.purpose?.message}</div>
         </div>
       </div>
-
+      <div className="row mb-3">
+        <div className="col">
+          <label htmlFor="phone" className="form-label">
+            Мобильный телефон
+          </label>
+          <div className="input-group mb-3">
+            <span className="input-group-text">+38</span>
+            <input
+              id="phone"
+              type="tel"
+              className={classcat([
+                `form-control`,
+                {
+                  "is-invalid": !!errors?.phone?.message,
+                },
+              ])}
+              {...register(`phone`, {
+                required: `required`,
+                pattern: {
+                  message: `Invalid phone number`,
+                  value: PHONE_REGEX.WITHOUT_CODE,
+                },
+              })}
+            />
+            <div className="invalid-feedback">{errors?.phone?.message}</div>
+          </div>
+        </div>
+        <div className="col">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            className={classcat([
+              `form-control`,
+              { "is-invalid": !!errors?.email?.message },
+            ])}
+            {...register(`email`, {
+              required: `required`,
+              pattern: {
+                message: `Invalid email address`,
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.0]+\.[A-Z]{2,}$/i,
+              },
+            })}
+          />
+          <div className="invalid-feedback">{errors?.email?.message}</div>
+        </div>
+      </div>
       <div className="mb-4">
         <label htmlFor="description" className="form-label">
           Описание
@@ -270,9 +350,9 @@ function AddGeneralInfo({ onNext }: Props) {
             { "is-invalid": !!errors?.description?.message },
           ])}
           {...register(`description`, {
-            required: `A description is required`,
+            required: `required`,
             minLength: {
-              message: `A description must be contain more than 80 symbols`,
+              message: `must be contain more than 80 symbols`,
               value: 80,
             },
           })}

@@ -121,7 +121,7 @@ function Post() {
             <div className="d-flex justify-content-center w-100">
               <Avatar />
             </div>
-            <div className="ms-md-3 w-100">
+            <div className="w-100">
               <div className="fw-bold text-bold mb-3">{data?.user.name}</div>
               {isPhoneShown ? (
                 <button
